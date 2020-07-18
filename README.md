@@ -1,4 +1,4 @@
 # CodeQuiz
 
 ## Very awesome app
-A new Flutter project.
+Flutter project.
