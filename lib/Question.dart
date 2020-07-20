@@ -1,3 +1,10 @@
+class UserAnswer {
+  final Question question;
+  final List<Answer> answerslist;
+
+  const UserAnswer(this.question, this.answerslist);
+}
+
 class Question {
   final String name;
   final List<Answer> answerList;
@@ -12,8 +19,7 @@ class Question {
       }
       return list;
     }
-    var question = Question(json["question"], parseListJson(json["answers"]));
-    return question;
+    return Question(json["question"], parseListJson(json["answers"]));
   }
 }
 
