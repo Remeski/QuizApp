@@ -1,10 +1,9 @@
-import 'package:CodeQuiz/QuizModel.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class AnswerTile extends StatefulWidget {
   final ValueChanged<bool> onChanged;
   final String answer;
+  bool isSelected = false;
 
   AnswerTile({this.onChanged, this.answer});
 
@@ -13,23 +12,22 @@ class AnswerTile extends StatefulWidget {
 }
 
 class _AnswerTileState extends State<AnswerTile> {
-  bool isSelected = false;
   var activeColor = Colors.grey[300];
   var unactiveColor = Colors.white;
 
   void buttonPressed() {
     setState(() {
-      if (isSelected) {
-        isSelected = false;
+      if (widget.isSelected) {
+        widget.isSelected = false;
       } else {
-        isSelected = true;
+        widget.isSelected = true;
       }
     });
-    widget.onChanged(isSelected);
+    widget.onChanged(widget.isSelected);
   }
 
   Color getColor() {
-    if (isSelected) {
+    if (widget.isSelected) {
       return activeColor;
     }
     return unactiveColor;
@@ -37,7 +35,7 @@ class _AnswerTileState extends State<AnswerTile> {
 
   IconData getIcon() {
     var icon = Icons.check_box_outline_blank;
-    if (isSelected) {
+    if (widget.isSelected) {
       icon = Icons.check_box;
     }
     return icon;

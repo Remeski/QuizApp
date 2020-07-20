@@ -18,13 +18,12 @@ class _QuizWidgetState extends State<QuizWidget> {
         future: loadFuture,
         builder: (context, snapshot) {
           if (snapshot.hasData && snapshot.data == true) {
-            var question = context.watch<QuizModel>().question;
             return Column(
               children: [
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Text(
-                    question.name,
+                    context.watch<QuizModel>().question.name,
                     style: TextStyle(fontSize: 20),
                   ),
                 ),
@@ -32,20 +31,22 @@ class _QuizWidgetState extends State<QuizWidget> {
                   children: [
                     ListView.builder(
                         shrinkWrap: true,
-                        itemCount: question.answerList.length,
+                        itemCount: context.watch<QuizModel>().question.answerList.length,
                         itemBuilder: (context, i) {
-                          context.watch<QuizModel>();
-                          return AnswerTile(
-                              onChanged: (value) {
-                                if (value) {
-                                  submittedAnswers.add(question.answerList[i]);
-                                } else {
-                                  var index = submittedAnswers
-                                      .indexOf(question.answerList[i]);
-                                  submittedAnswers.removeAt(index);
-                                }
-                              },
-                              answer: question.answerList[i].name);
+                          return Consumer<QuizModel>(
+                            builder: (context, data, _) => AnswerTile(
+                                onChanged: (value) {
+                                  if (value) {
+                                    submittedAnswers
+                                        .add(data.question.answerList[i]);
+                                  } else {
+                                    var index = submittedAnswers
+                                        .indexOf(data.question.answerList[i]);
+                                    submittedAnswers.removeAt(index);
+                                  }
+                                },
+                                answer: data.question.answerList[i].name),
+                          );
                         }),
                     FlatButton(
                       color: Colors.white,
@@ -76,7 +77,14 @@ class _QuizWidgetState extends State<QuizWidget> {
           } else if (snapshot.hasError) {
             return Text("Error ${snapshot.error}");
           }
-          return Center(child: CircularProgressIndicator());
+          return Center(child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(height: 15,),
+              Text("Loading question...", style: TextStyle(fontSize: 15),)
+            ],
+          ));
         });
   }
 }
