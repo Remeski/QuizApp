@@ -33,7 +33,7 @@ class _HomeState extends State<Home> {
         appBar: AppBar(
           centerTitle: true,
           title: Text(
-            "Code_Quiz",
+            "very aWeSomE kysely App",
             style: TextStyle(color: Colors.white),
           ),
           //centerTitle: true,

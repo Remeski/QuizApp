@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:CodeQuiz/AnswersPage.dart';
 import 'package:CodeQuiz/Question.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,7 +21,7 @@ class QuizModel extends ChangeNotifier {
 
   QuizModel({@required this.context});
 
-  Question get question {
+  Question get question { 
     return _question;
   }
 
@@ -35,16 +36,19 @@ class QuizModel extends ChangeNotifier {
 
   Future<bool> loadQuestions() async {
     bool isDone = false;
-    var questions = [];
 
-    void randomOrder(List list) {
-      for (var item in list) {
-        if (!_questionList.contains(item)) {
-          _questionList.add(item);
+    List<Question> randomOrder(List list) {
+      var randomOrderList = List<Question>();
+      while(list.length > randomOrderList.length) {
+        var randomNum = Random().nextInt(list.length );
+        if (!randomOrderList.contains(list[randomNum])) {
+          randomOrderList.add(list[randomNum]);
         }
       }
+      return randomOrderList;
     }
 
+    var questions = [];
     if (_questionList.isEmpty) {
       await http.get(_url).then((response) {
         var jsonQuestionList = jsonDecode(response.body);
@@ -57,7 +61,7 @@ class QuizModel extends ChangeNotifier {
     } else
       return true;
 
-    randomOrder(questions);
+    _questionList = randomOrder(questions);
     loadQuestion();
     return isDone;
   }
