@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:CodeQuiz/AnswersPage.dart';
+import 'package:CodeQuiz/AnswersPageModel.dart';
 import 'package:CodeQuiz/Question.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-//import 'package:provider/provider.dart';
 
 class QuizModel extends ChangeNotifier {
   final _url =
@@ -27,7 +27,7 @@ class QuizModel extends ChangeNotifier {
 
   void loadQuestion() {
     if(_questionList.length - 1 < questionIndex) {
-      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AnswersPage(userAnswers)));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => AnswersPage(userAnswers)));
     } 
     else {
       _question = _questionList[questionIndex++];
@@ -58,11 +58,10 @@ class QuizModel extends ChangeNotifier {
         }
         isDone = true;
       });
+      _questionList = randomOrder(questions);
+      loadQuestion();
     } else
-      return true;
-
-    _questionList = randomOrder(questions);
-    loadQuestion();
+      isDone = true;
     return isDone;
   }
 
@@ -77,7 +76,6 @@ class QuizModel extends ChangeNotifier {
     var bodyData = new Map<String, dynamic>();
     bodyData["name"] = ua.question.name;
     bodyData["answerslist"] = list;
-
     await http.post(_url, body: bodyData); 
   } 
 
