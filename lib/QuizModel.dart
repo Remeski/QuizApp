@@ -25,6 +25,11 @@ class QuizModel extends ChangeNotifier {
     return _question;
   }
 
+  int get remainingQuestions {
+    var remainingQuestion = _questionList.length - questionIndex + 1;
+    return remainingQuestion;
+  }
+
   void loadQuestion() {
     if(_questionList.length - 1 < questionIndex) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => AnswersPage(userAnswers)));
@@ -79,9 +84,38 @@ class QuizModel extends ChangeNotifier {
     await http.post(_url, body: bodyData); 
   } 
 
-  void submit(List<Answer> submittedAnswers) {
+  void _onLoading() {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return Dialog(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(width: 10),
+              Text("Saving your answers..."),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
+  Future<void> submit(List<Answer> submittedAnswers) async {
     var userAnswer = UserAnswer(_question, submittedAnswers);
-    saveQuestion(userAnswer);
+    if(questionIndex == _questionList.length) {
+      _onLoading();
+      await saveQuestion(userAnswer);
+    }
+    else {
+      saveQuestion(userAnswer);
+    }
+
     userAnswers.add(userAnswer);
 
     loadQuestion();

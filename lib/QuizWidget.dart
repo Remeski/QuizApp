@@ -21,17 +21,35 @@ class _QuizWidgetState extends State<QuizWidget> {
             return Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text(
-                    context.watch<QuizModel>().question.name,
-                    style: TextStyle(fontSize: 20),
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                            "Remaining questions: ${context.watch<QuizModel>().remainingQuestions}"),
+                      ),
+                      Expanded(
+                        flex: 4,
+                        child: Text(
+                          context.watch<QuizModel>().question.name,
+                          style: TextStyle(fontSize: 20),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Expanded(flex: 1, child: SizedBox())
+                    ],
                   ),
                 ),
                 Column(
                   children: [
                     ListView.builder(
                         shrinkWrap: true,
-                        itemCount: context.watch<QuizModel>().question.answerList.length,
+                        itemCount: context
+                            .watch<QuizModel>()
+                            .question
+                            .answerList
+                            .length,
                         itemBuilder: (context, i) {
                           return Consumer<QuizModel>(
                             builder: (context, data, _) => AnswerTile(
@@ -77,12 +95,18 @@ class _QuizWidgetState extends State<QuizWidget> {
           } else if (snapshot.hasError) {
             return Text("Error ${snapshot.error}");
           }
-          return Center(child: Column(
+          return Center(
+              child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CircularProgressIndicator(),
-              SizedBox(height: 15,),
-              Text("Loading question...", style: TextStyle(fontSize: 15),)
+              SizedBox(
+                height: 15,
+              ),
+              Text(
+                "Loading question...",
+                style: TextStyle(fontSize: 15),
+              )
             ],
           ));
         });

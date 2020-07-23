@@ -100,7 +100,14 @@ class _AnswerPageState extends State<AnswersPage> {
                   if (snapshot.hasError) {
                     return Text("Error ${snapshot.error}");
                   }
-                  return Center(child: CircularProgressIndicator());
+                  return Center(child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(),
+                      SizedBox(height: 10),
+                      Text("Loading answers...")
+                    ],
+                  ));
                 });
           }),
         ));
