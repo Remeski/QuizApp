@@ -1,5 +1,5 @@
 # CodeQuiz
 
-Flutter Quizzing web project.
+Quizzing web app made with flutter.
 
-Made in Koodikärpät.
+Google sheets worked as a backend.
