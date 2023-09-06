@@ -1,4 +1,5 @@
 # CodeQuiz
 
-## Very awesome app
-Flutter project.
+Flutter Quizzing web project.
+
+Made in Koodikärpät.
